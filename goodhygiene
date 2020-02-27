@@ -1,0 +1,41 @@
+#!/bin/bash
+
+#Usage: goodhygiene
+#
+#This program takes one path to a directory as a parameter. Testing if scripts  #in that is hygiene.
+
+usage(){
+  echo "Usage:$0"
+  echo 'Failed' >/dev/stderr
+  exit 1
+}
+
+good(){
+  for elem in $1;do
+    if[file elem|grep -c script];then
+      continue
+    else
+      if[#shellcheck returns nonzero on elem];then        
+        exit 1
+      fi
+    fi
+  done
+  exit 0
+}
+
+main(){
+  if[$# -eq 0];then
+    good ${PWD}
+  elif[$# -ne 1];then
+    usage
+  else
+    if[];then
+      echo 'Not a dictory' >/dev/stderr
+      exit 1
+    else
+      good $1
+    fi
+  fi
+}
+
+main $*
